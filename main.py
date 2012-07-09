@@ -39,16 +39,16 @@ class Class(object):
 
 
 class Student(object):
-    def __init__(self, name, age, gender):
+    def __init__(self, name, age, gender, miletimemin, miletimesec, pushups, curlups, stretchl, stretchr):
         self.name = name
         self.age = age
         self.gender = gender
-        self.miletime_min = 0
-        self.miletime_sec = 0
-        self.pushups = 0
-        self.curlups = 0
-        self.stretchl = 0
-        self.stretchr = 0
+        self.miletime_min = miletimemin
+        self.miletime_sec = miletimesec
+        self.pushups = pushups
+        self.curlups = curlups
+        self.stretchl = stretchl
+        self.stretchr = stretchr
 
     def get_age(self):
         return self.age
@@ -226,7 +226,7 @@ class CsvReader():
                 classes.append(Class(line.rstrip(':\n')))            
             else:
                 splitline = [x.strip() for x in line.split(',')]
-                classes[-1].add_student(Student(splitline[0],splitline[1],splitline[2]))
+                classes[-1].add_student(Student(splitline[0],splitline[1],splitline[2], splitline[3], splitline[4], splitline[5], splitline[6], splitline[7], splitline[8]))
         return classes
                 
 
@@ -525,7 +525,7 @@ class MainScreen(FloatLayout):
         self.addstudent_popup.open()
 
     def create_student(self, textinput1, textinput2, textinput3):
-        student = Student(textinput1, textinput2, textinput3)
+        student = Student(textinput1, textinput2, textinput3, 0, 0, 0, 0, 0, 0)
         self.currentclass.students.append(student)
         self.draw_report(self.currentclass)
 
