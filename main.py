@@ -479,7 +479,8 @@ class MainScreen(FloatLayout):
             studentbutton.bind(on_release=self.removestudent_callback)
             popupmenu.add_widget(studentbutton)
         backbutton = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-        self.removestudent_popup = Popup(title='Add Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        popupmenu.add_widget(backbutton)
+        self.removestudent_popup = Popup(title='Remove Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
         backbutton.bind(on_release=self.removestudent_popup.dismiss())
         self.removestudent_popup.open()
 
@@ -588,7 +589,8 @@ class MainScreen(FloatLayout):
             classbutton.bind(on_release=self.removeclass_callback)
             popupmenu.add_widget(classbutton)
         backbutton = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-        self.removeclass_popup = Popup(title='Add Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        popupmenu.add_widget(backbutton)
+        self.removeclass_popup = Popup(title='Remove Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
         backbutton.bind(on_release=self.removeclass_popup.dismiss())
         self.removeclass_popup.open()
 
