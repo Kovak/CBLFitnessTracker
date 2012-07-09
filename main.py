@@ -356,12 +356,36 @@ class MainScreen(FloatLayout):
         backbutton.bind(on_release=self.removestudent_popup.dismiss())
         self.removestudent_popup.open()
 
+    def remove_student_from_csv(self,student_name,class_name):
+        #hardcoded for now, sorry
+        classfile_in = open('classes.csv','r')
+        active_class = ""
+        new_file = ""
+        for line in classfile_in:
+            if ':' in line: active_class = line.strip(':\n')
+            if active_class == class_name and student_name == line.split(',')[0]:
+                # if this matches the student passed to remove_student, don't add it to the new file
+                pass
+            else:
+                # otherwise, copy the line to a new file
+                new_file += line
+
+        classfile_in.close()
+
+        #now reopen the file in write mode
+        classfile_out = open('classes.csv','w')
+        classfile_out.write(new_file)
+        classfile_out.close()
+
     def removestudent_callback(self, instance):
         studentname = instance.text
+        print "removing student: ",instance.text,"from class",self.currentclass.get_name()
+
         for each in self.currentclass.students:
             internalstudentname = each.get_name()
             if studentname == internalstudentname:
                 self.currentclass.students.remove(each.get_self())
+                self.remove_student_from_csv(studentname,self.currentclass.get_name())
                 self.draw_report(self.currentclass)
                 self.removestudent_popup.dismiss()
 
