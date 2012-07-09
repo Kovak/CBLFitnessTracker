@@ -361,8 +361,11 @@ class MainScreen(FloatLayout):
         self.updatemiles_popup.open()
 
     def update_miles(self, textinput1, textinput2):
-        self.currentstudent.miletime_min = int(textinput1)
-        self.currentstudent.miletime_sec = int(textinput2)
+        try: 
+            self.currentstudent.miletime_min = int(textinput1)
+            self.currentstudent.miletime_sec = int(textinput2)
+        except ValueError: 
+            print 'Incorrect values entered'
         self.draw_studentscreen(self.currentstudent)
         self.updatemiles_popup.dismiss()
 
@@ -383,8 +386,11 @@ class MainScreen(FloatLayout):
         self.updatemiles_popup.open()
 
     def update_stretch(self, textinput1, textinput2):
-        self.currentstudent.stretchl = int(textinput1)
-        self.currentstudent.stretchr = int(textinput2)
+        try:
+            self.currentstudent.stretchl = int(textinput1)
+            self.currentstudent.stretchr = int(textinput2)
+        except ValueError: 
+            print 'Incorrect values entered'
         self.draw_studentscreen(self.currentstudent)
         self.updatemiles_popup.dismiss()
 
@@ -401,7 +407,10 @@ class MainScreen(FloatLayout):
         self.updatecurlups_popup.open()
 
     def update_curlups(self, textinput1):
-        self.currentstudent.curlups = int(textinput1)
+        try:
+            self.currentstudent.curlups = int(textinput1)
+        except ValueError: 
+            print 'Incorrect values entered'
         self.draw_studentscreen(self.currentstudent)
         self.updatecurlups_popup.dismiss()
 
@@ -418,7 +427,10 @@ class MainScreen(FloatLayout):
         self.updatepushups_popup.open()
 
     def update_pushups(self, textinput1):
-        self.currentstudent.pushups = int(textinput1)
+        try: 
+            self.currentstudent.pushups = int(textinput1)
+        except ValueError: 
+            print 'Incorrect values entered'
         self.draw_studentscreen(self.currentstudent)
         self.updatepushups_popup.dismiss()
 
@@ -475,7 +487,7 @@ class MainScreen(FloatLayout):
             self.remove_student()
 
         if instance.text == 'Create Student':
-            self.create_student(self.studentnameinput.text, int(self.studentageinput.text), self.studentgenderinput.text)
+            self.create_student(self.studentnameinput.text, self.studentageinput.text, self.studentgenderinput.text)
             self.addstudent_popup.dismiss()
 
     def remove_student(self):
@@ -525,8 +537,11 @@ class MainScreen(FloatLayout):
         self.addstudent_popup.open()
 
     def create_student(self, textinput1, textinput2, textinput3):
-        student = Student(textinput1, textinput2, textinput3, 0, 0, 0, 0, 0, 0)
-        self.currentclass.students.append(student)
+        try:
+            student = Student(textinput1, int(textinput2), textinput3, 0, 0, 0, 0, 0, 0)
+            self.currentclass.students.append(student)
+        except ValueError: 
+            print 'Some data missing'
         self.draw_report(self.currentclass)
 
             
