@@ -414,9 +414,34 @@ class MainScreen(FloatLayout):
     def create_student(self, textinput1, textinput2, textinput3):
         student = Student(textinput1, textinput2, textinput3)
         self.currentclass.students.append(student)
+        self.create_student_in_csv(textinput1,textinput2,textinput3)
         self.draw_report(self.currentclass)
 
-            
+    def create_student_in_csv(self,name,age,gender):    
+        if gender.lower() in ['m','male']:
+            gender_str = 'Male'
+        elif gender.lower() in ['f','female']:
+            gender_str = 'Female'
+        else:
+            print "Uhoh this student has an ambiguous gender"
+            return
+
+        new_line = ','.join([name,str(age),gender_str])+'\n'
+
+        #hardcoded for now, sorry
+        classfile_in = open('classes.csv','r')
+        new_file = ""
+        for line in classfile_in:
+            new_file += line
+            if ':' in line:
+                new_file += new_line
+        classfile_in.close()
+
+        #now reopen the file in write mode
+        classfile_out = open('classes.csv','w')
+        classfile_out.write(new_file)
+        classfile_out.close()
+
 
     def draw_logo(self):
 
