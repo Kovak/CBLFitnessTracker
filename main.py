@@ -338,9 +338,12 @@ class MainScreen(FloatLayout):
 
 
     def update_information(self, textinput1, textinput2, textinput3):
-        self.currentstudent.name = textinput1
-        self.currentstudent.age = int(textinput2)
-        self.currentstudent.gender = textinput3
+        try:
+            self.currentstudent.name = textinput1
+            self.currentstudent.age = int(textinput2)
+            self.currentstudent.gender = textinput3
+        except ValueError:
+            print 'incorrect values entered'
         self.draw_studentscreen(self.currentstudent)
         self.updatestudent_popup.dismiss()
 
