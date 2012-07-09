@@ -205,43 +205,32 @@ class StudentScreen(FloatLayout):
 #MainScreen is the first screen that shows up as well as the class that controls which menu options show up and how.
 #All button functions should occur in this class
 
+class CsvReader():
+    def __init__(self,csvfile):
+        self.reader = open(csvfile,'r')
+        
+    def get_classes(self):
+        classes = []
+        for line in self.reader:
+            print line
+            #assume that if : is in a line, it is a class name
+            if line.strip() == '':
+                pass
+            elif ':' in line:
+                classes.append(Class(line.rstrip(':\n')))            
+            else:
+                splitline = [x.strip() for x in line.split(',')]
+                classes[-1].add_student(Student(splitline[0],splitline[1],splitline[2]))
+        return classes
+                
+
 class MainScreen(FloatLayout):
     def __init__(self, **kwargs):
         super(FloatLayout, self).__init__(**kwargs)
         self.classes = []
 
-        #Creates the Example Class Used for Testing
-        self.exampleclass = Class('exampleclass')
-        self.student1 = Student('Mark Davis', 9, 'Male')
-        self.student2 = Student('Olga Oglethrop', 8, 'Female')
-        self.student3 = Student('Jose Cuervo', 9, 'Male')
-        self.student4 = Student('The Dog', 24, 'Male')
-        self.student5 = Student('Mark Davis', 9, 'Male')
-        self.student6 = Student('Olga Oglethrop', 8, 'Female')
-        self.student7 = Student('Jose Cuervo', 9, 'Male')
-        self.student8 = Student('The Dog', 24, 'Male')
-        self.exampleclass.add_student(self.student1)
-        self.exampleclass.add_student(self.student2)
-        self.exampleclass.add_student(self.student3)
-        self.exampleclass.add_student(self.student4)
-        self.exampleclass.add_student(self.student5)
-        self.exampleclass.add_student(self.student6)
-        self.exampleclass.add_student(self.student7)
-        self.exampleclass.add_student(self.student8)
-        self.classes.append(self.exampleclass)
-
-
-        self.exampleclass2 = Class('example class 2')
-        self.student17 = Student('Mark Davis', 9, 'Male')
-        self.student18 = Student('Olga Oglethrop', 8, 'Female')
-        self.student19 = Student('Jose Cuervo', 9, 'Male')
-        self.student20 = Student('The Dog', 24, 'Male')
-        self.exampleclass2.add_student(self.student17)
-        self.exampleclass2.add_student(self.student18)
-        self.exampleclass2.add_student(self.student19)
-        self.exampleclass2.add_student(self.student20)
-        self.classes.append(self.exampleclass2)
-        ###############################################
+        reader = CsvReader('classes.csv')
+        self.classes = reader.get_classes()
 
         self.currentclass = None
         self.menu_width = Window.width/4.
