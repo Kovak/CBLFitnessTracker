@@ -85,7 +85,7 @@ class Student(object):
 class ReportScreen(FloatLayout):
     def __init__(self, classname, parent = None, **kwargs):
         super(FloatLayout, self).__init__(**kwargs)
-        students = classname.students
+        self.students = classname.students
         self.parent = parent
         studentlayout = BoxLayout(orientation='vertical', spacing = 10, size_hint_x = 2)
         overalllayout = BoxLayout(orientation='horizontal', pos=(Window.width/10,Window.height/5), size=(Window.width - Window.width/5, Window.height - Window.height/5))
@@ -111,9 +111,9 @@ class ReportScreen(FloatLayout):
         stretchlayout.add_widget(stretchlabel)
 
         #This loop adds in the scores for each student
-        for x in students:
+        for x in self.students:
             labelname1 = Button(text = x.get_name(), background_normal='buttons/button_normal.png', background_down='buttons/button_down.png') 
-            labelname1.bind(on_press=self.parent.student_callback)
+            labelname1.bind(on_release=self.parent.student_callback)
             labelname2 = Label(text = x.get_gender()) 
             labelname3 = Label(text = str(x.get_age()))
             labelname4 = Label(text = str(x.get_miletime()))
@@ -240,14 +240,14 @@ class MainScreen(FloatLayout):
         self.menu = BoxLayout(orientation= 'vertical',spacing = self.menu_height/15., size = (self.menu_width, self.menu_height), pos = (self.menu_x, self.menu_y))
         for each in self.classes:
             button = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-            button.bind(on_press=self.callback)
+            button.bind(on_release=self.callback)
             #This is the corresponding code to load a class see line #224
             self.menu.add_widget(button)
         self.addclassbutton = Button(text='Add Class', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-        self.addclassbutton.bind(on_press=self.callback)
+        self.addclassbutton.bind(on_release=self.callback)
         self.menu.add_widget(self.addclassbutton)
         self.removeclassbutton = Button(text='Remove Class', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-        self.removeclassbutton.bind(on_press=self.callback)
+        self.removeclassbutton.bind(on_release=self.callback)
         self.menu.add_widget(self.removeclassbutton)
         self.redraw_canvas()
         self.draw_logo()
@@ -302,8 +302,8 @@ class MainScreen(FloatLayout):
         self.back_button = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         self.menu.add_widget(self.edit_student_button)
         self.menu.add_widget(self.back_button)
-        self.edit_student_button.bind(on_press=self.studentscreen_callback)
-        self.back_button.bind(on_press=self.studentscreen_callback)
+        self.edit_student_button.bind(on_release=self.studentscreen_callback)
+        self.back_button.bind(on_release=self.studentscreen_callback)
         self.add_widget(self.menu)
         self.add_widget(self.studentscreen)
 
@@ -321,9 +321,9 @@ class MainScreen(FloatLayout):
         self.menu.add_widget(self.add_student_button)
         self.menu.add_widget(self.remove_student_button)
         self.menu.add_widget(self.back_button)
-        self.add_student_button.bind(on_press=self.report_callback)
-        self.remove_student_button.bind(on_press=self.report_callback)
-        self.back_button.bind(on_press=self.report_callback)
+        self.add_student_button.bind(on_release=self.report_callback)
+        self.remove_student_button.bind(on_release=self.report_callback)
+        self.back_button.bind(on_release=self.report_callback)
         self.add_widget(self.menu)
         self.add_widget(self.report)
 
@@ -336,10 +336,61 @@ class MainScreen(FloatLayout):
             self.draw_logo()
 
         if instance.text == 'Add Student':
-            pass
+            self.add_student()
 
         if instance.text == 'Remove Student':
-            pass
+            self.remove_student()
+
+        if instance.text == 'Create Student':
+            self.create_student(self.studentnameinput.text, int(self.studentageinput.text), self.studentgenderinput.text)
+            self.addstudent_popup.dismiss()
+
+    def remove_student(self):
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = self.menu_height/15., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        for each in self.currentclass.students:
+            studentbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
+            studentbutton.bind(on_release=self.removestudent_callback)
+            popupmenu.add_widget(studentbutton)
+        backbutton = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
+        self.removestudent_popup = Popup(title='Add Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        backbutton.bind(on_release=self.removestudent_popup.dismiss())
+        self.removestudent_popup.open()
+
+    def removestudent_callback(self, instance):
+        studentname = instance.text
+        for each in self.currentclass.students:
+            internalstudentname = each.get_name()
+            if studentname == internalstudentname:
+                self.currentclass.students.remove(each.get_self())
+                self.draw_report(self.currentclass)
+                self.removestudent_popup.dismiss()
+
+    def add_student(self):
+        print 'pop up'
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = self.menu_height/15., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        
+        popuplabel1 = Label(text='Name the student:')
+        popuplabel2 = Label(text='Student age:')
+        popuplabel3 = Label(text='Student gender:')
+        self.studentnameinput = TextInput(multiline = False)
+        self.studentageinput = TextInput(multiline = False)
+        self.studentgenderinput = TextInput(multiline = False)
+        popupmenu.add_widget(popuplabel1)
+        popupmenu.add_widget(self.studentnameinput)
+        popupmenu.add_widget(popuplabel2)
+        popupmenu.add_widget(self.studentageinput)
+        popupmenu.add_widget(popuplabel3)
+        popupmenu.add_widget(self.studentgenderinput)
+        dismissbutton = Button(text='Create Student', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
+        popupmenu.add_widget(dismissbutton)
+        dismissbutton.bind(on_release=self.report_callback)
+        self.addstudent_popup = Popup(title='Add Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.addstudent_popup.open()
+
+    def create_student(self, textinput1, textinput2, textinput3):
+        student = Student(textinput1, textinput2, textinput3)
+        self.currentclass.students.append(student)
+        self.draw_report(self.currentclass)
 
             
 
@@ -389,7 +440,7 @@ class MainScreen(FloatLayout):
         popupmenu.add_widget(self.textinput)
         dismissbutton = Button(text='Create Class', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(dismissbutton)
-        dismissbutton.bind(on_press=self.callback)
+        dismissbutton.bind(on_release=self.callback)
         self.addclass_popup = Popup(title='Add Class', size_hint=(None,None), size=(self.menu_width, self.menu_height), content = popupmenu)
         self.addclass_popup.open()
 
@@ -408,7 +459,7 @@ class MainScreen(FloatLayout):
         self.menu = BoxLayout(orientation= 'vertical',spacing = self.menu_height/15., size = (self.menu_width, self.menu_height), pos = (self.menu_x, self.menu_y))
         for each in self.classes:
             classbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-            classbutton.bind(on_press=self.removeclass_callback)
+            classbutton.bind(on_release=self.removeclass_callback)
             self.menu.add_widget(classbutton)
         self.add_widget(self.menu)
 
@@ -423,7 +474,7 @@ class MainScreen(FloatLayout):
         self.menu = BoxLayout(orientation= 'vertical',spacing = self.menu_height/15., size = (self.menu_width, self.menu_height), pos = (self.menu_x, self.menu_y))
         for each in self.classes:
             classbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
-            classbutton.bind(on_press=self.callback)
+            classbutton.bind(on_release=self.callback)
             self.menu.add_widget(classbutton)
         self.menu.add_widget(self.addclassbutton)
         self.menu.add_widget(self.removeclassbutton)
