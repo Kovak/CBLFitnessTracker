@@ -237,9 +237,15 @@ class MainScreen(FloatLayout):
 
         reader = CsvReader('classes.csv')
         self.classes = reader.get_classes()
-
+        self.menu_width = Window.width *.40
+        self.menu_height = Window.height *.66
+        self.menu_x = Window.width *.30
+        self.menu_y = Window.height *.10
+        self.popup_height = Window.height *.50
+        self.popup_height2 = Window.height * .33
+        self.popup_y = Window.height *.45
         self.currentclass = None
-        self.menu = BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.65), pos = (Window.width*.33, Window.height*.10))
+        self.menu = BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.menu_height), pos = (self.menu_x, self.menu_y))
         for each in self.classes:
             button = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
             button.bind(on_release=self.callback)
@@ -310,7 +316,7 @@ class MainScreen(FloatLayout):
             self.update_pushups(self.pushupsinput.text)
 
     def edit_information_button(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height), pos = (self.menu_x, self.popup_y))
         
         popuplabel1 = Label(text='Name:')
         popuplabel2 = Label(text='Student age:')
@@ -327,7 +333,7 @@ class MainScreen(FloatLayout):
         dismissbutton = Button(text='Update Student', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(dismissbutton)
         dismissbutton.bind(on_release=self.studentscreen_callback)
-        self.updatestudent_popup = Popup(title='Update Student Information', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.updatestudent_popup = Popup(title='Update Student Information', size_hint=(None,None), pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height), content = popupmenu)
         self.updatestudent_popup.open()
 
 
@@ -339,7 +345,7 @@ class MainScreen(FloatLayout):
         self.updatestudent_popup.dismiss()
 
     def mile_run_button(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height2), pos = (self.menu_x, self.popup_y))
         popuplabel1 = Label(text='Minutes:')
         popuplabel2 = Label(text='Seconds:')
         self.minutesinput = TextInput(multiline = False)
@@ -351,7 +357,7 @@ class MainScreen(FloatLayout):
         inputscorebutton = Button(text='Input Mile Score', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(inputscorebutton)
         inputscorebutton.bind(on_release=self.studentscreen_callback)
-        self.updatemiles_popup = Popup(title='Record Mile Score', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.updatemiles_popup = Popup(title='Record Mile Score', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height2), content = popupmenu)
         self.updatemiles_popup.open()
 
     def update_miles(self, textinput1, textinput2):
@@ -361,7 +367,7 @@ class MainScreen(FloatLayout):
         self.updatemiles_popup.dismiss()
 
     def stretch_button(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height2), pos = (self.menu_x, self.popup_y))
         popuplabel1 = Label(text='Stretch L')
         popuplabel2 = Label(text='Stretch R')
         self.stretchlinput = TextInput(multiline = False)
@@ -373,7 +379,7 @@ class MainScreen(FloatLayout):
         inputscorebutton = Button(text='Input Sit-and-Reach Score', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(inputscorebutton)
         inputscorebutton.bind(on_release=self.studentscreen_callback)
-        self.updatemiles_popup = Popup(title='Record Sit-and-Reach Score', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.updatemiles_popup = Popup(title='Record Sit-and-Reach Score', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height2), content = popupmenu)
         self.updatemiles_popup.open()
 
     def update_stretch(self, textinput1, textinput2):
@@ -383,7 +389,7 @@ class MainScreen(FloatLayout):
         self.updatemiles_popup.dismiss()
 
     def curlups_button(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height2), pos = (self.menu_x, self.popup_y))
         popuplabel1 = Label(text='Curl-Ups')
         self.curlupsinput = TextInput(multiline = False)
         popupmenu.add_widget(popuplabel1)
@@ -391,7 +397,7 @@ class MainScreen(FloatLayout):
         inputscorebutton = Button(text='Input Curl-Ups Score', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(inputscorebutton)
         inputscorebutton.bind(on_release=self.studentscreen_callback)
-        self.updatecurlups_popup = Popup(title='Record Curl-Ups Score', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.updatecurlups_popup = Popup(title='Record Curl-Ups Score', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height2), content = popupmenu)
         self.updatecurlups_popup.open()
 
     def update_curlups(self, textinput1):
@@ -400,7 +406,7 @@ class MainScreen(FloatLayout):
         self.updatecurlups_popup.dismiss()
 
     def pushups_button(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height2), pos = (self.menu_x, self.popup_y))
         popuplabel1 = Label(text='Push-Ups')
         self.pushupsinput = TextInput(multiline = False)
         popupmenu.add_widget(popuplabel1)
@@ -408,7 +414,7 @@ class MainScreen(FloatLayout):
         inputscorebutton = Button(text='Input Push-Ups Score', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(inputscorebutton)
         inputscorebutton.bind(on_release=self.studentscreen_callback)
-        self.updatepushups_popup = Popup(title='Record Push-Ups Score', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
+        self.updatepushups_popup = Popup(title='Record Push-Ups Score', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height2), content = popupmenu)
         self.updatepushups_popup.open()
 
     def update_pushups(self, textinput1):
@@ -473,29 +479,32 @@ class MainScreen(FloatLayout):
             self.addstudent_popup.dismiss()
 
     def remove_student(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height), pos = (self.menu_x, self.popup_y))
         for each in self.currentclass.students:
             studentbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
             studentbutton.bind(on_release=self.removestudent_callback)
             popupmenu.add_widget(studentbutton)
         backbutton = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(backbutton)
-        self.removestudent_popup = Popup(title='Remove Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
-        backbutton.bind(on_release=self.removestudent_popup.dismiss())
+        self.removestudent_popup = Popup(title='Remove Student', size_hint=(None,None), size = (self.menu_width, self.popup_height), content = popupmenu)
+        backbutton.bind(on_release=self.removestudent_callback)
         self.removestudent_popup.open()
 
     def removestudent_callback(self, instance):
         studentname = instance.text
-        for each in self.currentclass.students:
-            internalstudentname = each.get_name()
-            if studentname == internalstudentname:
-                self.currentclass.students.remove(each.get_self())
-                self.draw_report(self.currentclass)
-                self.removestudent_popup.dismiss()
+        if instance.text == 'Back':
+            self.removestudent_popup.dismiss()
+        else:
+            for each in self.currentclass.students:
+                internalstudentname = each.get_name()
+                if studentname == internalstudentname:
+                    self.currentclass.students.remove(each.get_self())
+                    self.draw_report(self.currentclass)
+                    self.removestudent_popup.dismiss()
 
     def add_student(self):
         print 'pop up'
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.75), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height), pos = (self.menu_x, self.popup_y))
         
         popuplabel1 = Label(text='Name the student:')
         popuplabel2 = Label(text='Student age:')
@@ -512,7 +521,7 @@ class MainScreen(FloatLayout):
         dismissbutton = Button(text='Create Student', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(dismissbutton)
         dismissbutton.bind(on_release=self.report_callback)
-        self.addstudent_popup = Popup(title='Add Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.75), content = popupmenu)
+        self.addstudent_popup = Popup(title='Add Student', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size = (self.menu_width, self.popup_height), content = popupmenu)
         self.addstudent_popup.open()
 
     def create_student(self, textinput1, textinput2, textinput3):
@@ -560,7 +569,7 @@ class MainScreen(FloatLayout):
     #I will update popup graphics to fit the scheme of things
     def add_class(self):
         print 'pop up'
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.33), pos = (Window.width*.33, Window.height*.33))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height2), pos = (self.menu_width, self.popup_y))
         popuplabel = Label(text='Name the class:')
         self.textinput = TextInput(focus = True, multiline = False)
         popupmenu.add_widget(popuplabel)
@@ -568,30 +577,33 @@ class MainScreen(FloatLayout):
         dismissbutton = Button(text='Create Class', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(dismissbutton)
         dismissbutton.bind(on_release=self.callback)
-        self.addclass_popup = Popup(title='Add Class', size_hint=(None,None), size=(Window.width*.33, Window.height*.40), content = popupmenu)
+        self.addclass_popup = Popup(title='Add Class', size_hint=(None,None),pos_hint = {'x': .30, 'y':.45}, size=(self.menu_width, self.popup_height2), content = popupmenu)
         self.addclass_popup.open()
 
     #should remove the class specified from the self.classes array, however I cannot figure out how to name the object correctly
     def removeclass_callback(self, instance):
-        classname = instance.text
-        for each in self.classes:
-            internalclassname = each.get_name()
-            if classname == internalclassname:
-                self.classes.remove(each.get_self())
-                self.reload_menu()
-        self.removeclass_popup.dismiss()
+        if instance.text == 'Back':
+            self.removeclass_popup.dismiss()
+        else:
+            classname = instance.text
+            for each in self.classes:
+                internalclassname = each.get_name()
+                if classname == internalclassname:
+                    self.classes.remove(each.get_self())
+                    self.reload_menu()
+            self.removeclass_popup.dismiss()
 
     #This function loads the list of classes in and then binds remove_callback 
     def remove_class(self):
-        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.66), pos = (Window.width*.33, Window.height*.165))
+        popupmenu =  BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.popup_height), pos = (self.menu_x, self.popup_y))
         for each in self.classes:
             classbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
             classbutton.bind(on_release=self.removeclass_callback)
             popupmenu.add_widget(classbutton)
         backbutton = Button(text='Back', size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
         popupmenu.add_widget(backbutton)
-        self.removeclass_popup = Popup(title='Remove Student', size_hint=(None,None), size = (Window.width*.33, Window.height*.66), content = popupmenu)
-        backbutton.bind(on_release=self.removeclass_popup.dismiss())
+        self.removeclass_popup = Popup(title='Remove Student', size_hint=(None,None), size = (self.menu_width, self.popup_height), content = popupmenu)
+        backbutton.bind(on_release=self.removeclass_callback)
         self.removeclass_popup.open()
 
 
@@ -604,7 +616,7 @@ class MainScreen(FloatLayout):
 
     def reload_menu(self):
         self.remove_widget(self.menu)
-        self.menu = BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (Window.width*.33, Window.height*.65), pos = (Window.width*.33, Window.height*.10))
+        self.menu = BoxLayout(orientation= 'vertical',spacing = Window.height/50., size = (self.menu_width, self.menu_height), pos = (self.menu_x, self.menu_y))
         for each in self.classes:
             classbutton = Button(text=each.get_name(), size_hint_y=None, height=40, background_normal='buttons/button_normal.png', background_down='buttons/button_down.png')
             classbutton.bind(on_release=self.callback)
