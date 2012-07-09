@@ -111,6 +111,7 @@ class ReportScreen(FloatLayout):
         self.curlupslayout.add_widget(curlupslabel)
         self.stretchlayout.add_widget(stretchlabel)
 
+        #This loop adds in the scores for each student
         for x in self.students:
             labelname1 = 'studentlabel' + str(self.numstudents)
             labelname2 = 'genderlabel' + str(self.numstudents)
@@ -127,6 +128,21 @@ class ReportScreen(FloatLayout):
             vars()[labelname5] = Label(text = str(x.get_pushups()))  
             vars()[labelname6] = Label(text = str(x.get_curlups()))
             vars()[labelname7] = Label(text = str(x.get_stretchl()) + '/' + str(x.get_stretchr())) 
+
+            #Color Text Based on Scores, this is just sample code. We need to expand this based on the standards and age
+            #Pass
+            if x.get_pushups() >= 0:
+                vars()[labelname5].color = (0.031372549, 0.768627451, 0.109803922, 1)
+            #Fail
+            if x.get_curlups() <= 10:
+                vars()[labelname6].color = (0.82745098, 0.003921569, 0.02745098, 1)
+
+            #Super Saiyan
+            if x.get_miletime() >= 0:
+                vars()[labelname4].color = (1, 0.847058824, 0.109803922, 1)
+
+
+
             self.numstudents += 1
             self.studentlayout.add_widget(vars()[labelname1])
             self.studentgenderlayout.add_widget(vars()[labelname2])
@@ -135,6 +151,9 @@ class ReportScreen(FloatLayout):
             self.pushupslayout.add_widget(vars()[labelname5])
             self.curlupslayout.add_widget(vars()[labelname6])
             self.stretchlayout.add_widget(vars()[labelname7])
+
+
+
         self.overalllayout.add_widget(self.studentlayout)
         self.overalllayout.add_widget(self.studentgenderlayout)
         self.overalllayout.add_widget(self.studentagelayout)
@@ -234,6 +253,19 @@ class MainScreen(FloatLayout):
         self.exampleclass.add_student(self.student16) 
         self.classcount = 1
         self.classes.append(self.exampleclass)
+
+
+        self.exampleclass2 = Class('example class 2')
+        self.student17 = Student('Mark Davis', 9, 'Male')
+        self.student18 = Student('Olga Oglethrop', 8, 'Female')
+        self.student19 = Student('Jose Cuervo', 9, 'Male')
+        self.student20 = Student('The Dog', 24, 'Male')
+        self.exampleclass2.add_student(self.student17)
+        self.exampleclass2.add_student(self.student18)
+        self.exampleclass2.add_student(self.student19)
+        self.exampleclass2.add_student(self.student20)
+        self.classes.append(self.exampleclass2)
+        self.classcount = 2
         ###############################################
         self.currentclass = None
         self.menu_width = Window.width/4.
